@@ -1,0 +1,9 @@
+{"total":10,"rows":[
+	{"number":"201402190001","project":"艾特云","money":"20","createTime":"2014-09-09","name":"宋阳","state":"待提交"},
+	{"number":"201402190001","project":"艾特云","money":"20","createTime":"2014-09-09","name":"宋阳","state":"已审核"},
+	{"number":"201402190001","project":"艾特云","money":"20","createTime":"2014-09-09","name":"宋阳","state":"待审核"},
+	{"number":"201402190001","project":"艾特云","money":"20","createTime":"2014-09-09","name":"宋阳","state":"待提交"},
+	{"number":"201402190001","project":"艾特云","money":"20","createTime":"2014-09-09","name":"宋阳","state":"待提交"}
+],"footer":[
+	{"money":604.00,"project":"合计:"}
+]}

@@ -1,47 +1,55 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="com.saturn.app.utils.DateUtils"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>用户信息</title>
+<title>报销信息</title>
 <%@ include file="/app/includes/header.jsp"%>
 <script type="text/javascript">
 	$(function() {
 		$('#queryTable').datagrid({
-			title : '用户列表',
+			title : '报销明细列表',
 			iconCls : 'icon-datalist',
 			nowrap : false,
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
-			url : '<%=request.getContextPath()%>/app/auth/user/listUsers.action',
+			url : '<%=request.getContextPath()%>/utc/json/datagrid_data3.json',
 			sortName : 'id',
 			sortOrder : 'desc',
 			remoteSort : true,
+			fitColumns: true,
+			rownumbers:true,
+			showFooter:true,
 			idField : 'id',//唯一标识列
 			frozenColumns : [ [ {//不可被删除的列
 				field : 'ck',
 				checkbox : true
 			}, {
-				title : '登录ID',
-				field : 'id',
-				width : 80,
+				title : '名称',
+				field : 'name',
+				width : 100,
 				sortable : true
 			} ] ],
 			columns : [ [ {
-				field : 'name',
-				title : '姓名',
-				width : 120,
+				field : 'money',
+				title : '金额',
+				width : 80,
 				sortable : true
 			}, {
-				field : 'email',
-				title : '邮箱',
-				width : 200,
+				field : 'number',
+				title : '数量',
+				width : 80,
 				sortable : true
 			}, {
-				field : 'phone',
-				title : '电话',
+				field : 'createTime',
+				title : '时间',
+				width : 80	
+			}, {
+				field : 'remark',
+				title : '备注',
 				width : 150	
 			}, {
 				field : 'opt',
@@ -58,7 +66,7 @@
 			rownumbers : true,
 			toolbar : [ {
 				id : 'btnadd',
-				text : '添加',
+				text : '添加明细',
 				iconCls : 'icon-add',
 				handler : function() {
 					window.location.href='<%=request.getContextPath()%>/app/auth/user/addUser.jsp';
@@ -104,40 +112,14 @@
 					});
 					return false;
 				}
-			},'-',{
-				id : 'btnedit',
-				text : '管理角色',
-				iconCls : 'icon-manger',
+			},{
+				id : 'btndelete',
+				text : '返回',
+				iconCls : 'icon-back',
 				handler : function() {
-					var rows = $('#queryTable').datagrid('getSelections');
-					if (rows.length == 0) {
-						$.messager.alert('提示','请选择操作项','info');
-						return;
-					} else if (rows.length > 1) {
-						$.messager.alert('提示','只能选择一项','info');
-						return;
-					}
-					
-					window.location.href='<%=request.getContextPath()%>/app/auth/user/showUserRoles.jsp?id=' + rows[0].id;
-					return false;
-				}
-			} , '-' ,{
-					id : 'btnedit',
-					text : '管理资源',
-					iconCls : 'icon-manger',
-					handler : function() {
-						var rows = $('#queryTable').datagrid('getSelections');
-						if (rows.length == 0) {
-							$.messager.alert('提示','请选择修改项','info');
-							return;
-						} else if (rows.length > 1) {
-							$.messager.alert('提示','只能选择一项','info');
-							return;
+							window.location.href='<%=request.getContextPath()%>/utc/apply/show.jsp';
 						}
-						window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUserRecource.action?id=' + rows[0].id;
-						return false;
-					}
-				}]
+			}]
 		});
 	});
 	
@@ -172,19 +154,29 @@
 </script>
 </head>
 <body>
-	<div id="panel" class="easyui-panel" title="查询条件"
+	<div id="panel" class="easyui-panel" title="报销申请单"
 		icon="icon-query-form" collapsible="true"
 		style="padding: 10px;">
 
 		<form id="queryForm" method="post">
-			<label for="id">登录ID:</label> 
-			<input id="id" type="text" name="id"></input>
-			<label for="name">姓名:</label>
-			<input id="name" type="text" name="name"></input>
-			<label for="email">邮箱:</label>
-			<input id="email" type="text" name="email"></input>
-			<label for="phone">电话 :</label>
-			<input id="phone" type="text" name="phone"></input>
+			<table>
+			<tr>	
+			<td>编号:</td>
+			<td><input id="id" type="text" name="id" value="2014021900001"></input></td>
+			<td></td>
+			<td>项目:</td>
+			<td><select id="project" class="easyui-combobox"
+						name="project" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
+						 valueField="id"
+						textField="text" editable="false"></select></td>
+			<td></td>
+			<td>时间:</td>
+			<td><input id="createTime" type="text" name="createTime" class="easyui-datetimebox" value="<%=DateUtils.getSystemTime()%>"></input></td>
+			<td></td>
+			<td>员工名:</td>
+			<td><input id="phone" type="text" name="phone" value="宋阳"></input><td>
+			</tr>
+			</table>
 			<div style="padding: 10px;" >
 				<a href="#" class="easyui-linkbutton" onclick="queryVO();" iconCls="icon-search">确定</a>
 				<a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a>

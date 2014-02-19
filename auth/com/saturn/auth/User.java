@@ -48,7 +48,7 @@ public class User {
 			}
 		}
 	}
-/*
+
 	public static void addUsersToOrganization(String organizationId,
 			String[] userIds) {
 		if (userIds != null) {
@@ -63,7 +63,7 @@ public class User {
 				"INSERT INTO auth_re_organization_user VALUES(?, ?)",
 				organizationId, userId);
 	}
-*/
+
 	public static int edit(User user) {
 		return SimpleDaoTemplate
 				.update("UPDATE auth_users SET name = ?, password = ?, email = ?, phone = ? WHERE id = ?",
@@ -91,7 +91,7 @@ public class User {
 						orderBy, order), mapping, User.class, start, offset);
 	}
 
-	/*public static ListData<User> getUsersByOrganizationId(
+	public static ListData<User> getUsersByOrganizationId(
 			String organizationId, String start, String offset, String orderBy) {
 
 		return SimpleDaoTemplate
@@ -101,7 +101,7 @@ public class User {
 								organizationId).addCondition("ORDER BY ? desc",
 								orderBy), mapping, User.class, start, offset);
 	}
-*/
+
 	public static int updateUserResource(final String userId,
 			final String[] chekcedIds) {
 		return SimpleDaoTemplate.update(new ITransaction() {

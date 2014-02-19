@@ -124,6 +124,28 @@ public class Resource {
 
 	}
 
+	public static List<Resource> getResourcesByOrganizationId(
+			String organizationId) {
+
+		return SimpleDaoTemplate
+				.query("SELECT id,NAME,sort,path,parentId,CASE WHEN (id  IN (SELECT auth_re_organization_resource.resourceId FROM auth_re_organization_resource WHERE auth_re_organization_resource.organizationId='"
+						+ organizationId
+						+ "')) THEN 'true 'ELSE null END AS checked FROM app_resources ORDER BY sort asc",
+						null, new ORMapping<Resource>() {
+
+							@Override
+							public void mappingResult(ResultSet rs, Resource t)
+									throws SQLException {
+								t.setId(rs.getString("id"));
+								t.setName(rs.getString("name"));
+								t.setPath(rs.getString("path"));
+								t.setParentId(rs.getString("parentId"));
+								t.setChecked(rs.getString("checked"));
+								t.setSort(rs.getString("sort"));
+							}
+						}, Resource.class);
+
+	}
 	/**
 	 * 获得用户登录菜单资源
 	 * 

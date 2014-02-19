@@ -15,10 +15,13 @@
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
-			url : '<%=request.getContextPath()%>/utc/json/datagrid_data1.json',
+			url : '<%=request.getContextPath()%>/utc/json/datagrid_data2.json',
 			sortName : 'id',
 			sortOrder : 'desc',
 			remoteSort : true,
+			fitColumns: true,
+			rownumbers:true,
+			showFooter:true,
 			idField : 'id',//唯一标识列
 			frozenColumns : [ [ {//不可被删除的列
 				field : 'ck',
@@ -66,86 +69,13 @@
 			rownumbers : true,
 			toolbar : [ {
 				id : 'btnadd',
-				text : '创建',
+				text : '查看详情',
 				iconCls : 'icon-add',
 				handler : function() {
 					window.location.href='<%=request.getContextPath()%>/utc/apply/add.jsp';
 					return false;//解决IE6的不跳转的bug
 				}
-			}, {
-				id : 'btnedit',
-				text : '编辑',
-				iconCls : 'icon-edit',
-				handler : function() {
-					var rows = $('#queryTable').datagrid('getSelections');
-					if (rows.length == 0) {
-						$.messager.alert('提示','请选择修改项','info');
-						return;
-					} else if (rows.length > 1) {
-						$.messager.alert('提示','只能选择一项','info');
-						return;
-					}
-					editVO(rows[0].id);
-					//window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUser.action?id='+rows[0].id;
-					return false;
-				}
-			},{
-				id : 'btndelete',
-				text : '删除',
-				iconCls : 'icon-remove',
-				handler : function() {
-					var rows = $('#queryTable').datagrid('getSelections');
-					if (rows.length == 0) {
-						$.messager.alert('提示','请选择删除项','info');
-						return;
-					} 
-					
-					var ids = [];
-					for(var i=0;i<rows.length;i++){
-						ids.push(rows[i].id);
-					}
-
-					$.messager.confirm('确认删除项', '确认删除该选项', function(result){
-						if (result){
-							window.location.href='<%=request.getContextPath()%>/app/auth/user/deleteUser.action?ids='+ids.join('__');
-						}
-					});
-					return false;
-				}
-			},'-',{
-				id : 'btnedit',
-				text : '提交',
-				iconCls : 'icon-redo',
-				handler : function() {
-					var rows = $('#queryTable').datagrid('getSelections');
-					if (rows.length == 0) {
-						$.messager.alert('提示','请选择操作项','info');
-						return;
-					} else if (rows.length > 1) {
-						$.messager.alert('提示','只能选择一项','info');
-						return;
-					}
-					
-					window.location.href='#';
-					return false;
-				}
-			} , '-' ,{
-					id : 'btnedit',
-					text : '打印',
-					iconCls : 'icon-manger',
-					handler : function() {
-						var rows = $('#queryTable').datagrid('getSelections');
-						if (rows.length == 0) {
-							$.messager.alert('提示','请选择修改项','info');
-							return;
-						} else if (rows.length > 1) {
-							$.messager.alert('提示','只能选择一项','info');
-							return;
-						}
-						window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUserRecource.action?id=' + rows[0].id;
-						return false;
-					}
-				}]
+			}]
 		});
 	});
 	
@@ -185,7 +115,7 @@
 		style="padding: 10px;">
 
 		<form id="queryForm" method="post">
-		<table>
+			<table>
 			<tr>	
 			<td>编号:</td>
 			<td><input id="id" type="text" name="id"></input></td>
@@ -207,7 +137,6 @@
 				<a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a>
 			</div>
 		</form>
-		
 	</div>
 	<table id="queryTable"></table>
 </body>
