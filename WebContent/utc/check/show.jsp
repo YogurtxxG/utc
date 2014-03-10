@@ -15,7 +15,10 @@
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
-			url : '<%=request.getContextPath()%>/utc/json/datagrid_data1.json',
+			url : '<%=request.getContextPath()%>/app/utc/reimbursement/listReimbursement.action',
+			queryParams : {
+				state :'待审核'
+			},
 			sortName : 'id',
 			sortOrder : 'desc',
 			remoteSort : true,
@@ -30,9 +33,9 @@
 				sortable : true
 			} ] ],
 			columns : [ [ {
-				field : 'project',
+				field : 'projectName',
 				title : '项目',
-				width : 120,
+				width : 200,
 				sortable : true
 			}, {
 				field : 'money',
@@ -44,7 +47,7 @@
 				title : '时间',
 				width : 150	
 			}, {
-				field : 'name',
+				field : 'userName',
 				title : '报销人',
 				width : 150	
 			}, {

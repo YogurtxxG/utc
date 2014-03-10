@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="system"/>
 	<classpathentry kind="src" path="app"/>
 	<classpathentry kind="src" path="webdo"/>
+	<classpathentry kind="src" path="utc"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v6.0">
 		<attributes>
 			<attribute name="owner.project.facets" value="jst.web"/>
