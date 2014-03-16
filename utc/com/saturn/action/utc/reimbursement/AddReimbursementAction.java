@@ -16,11 +16,31 @@ public class AddReimbursementAction implements IAction {
 			HttpServletResponse response) {
 
 		Reimbursement vo = BeanUtils.getBean(request, Reimbursement.class);
-		
-		if (Reimbursement.add(vo) == 1) {
-			return new JspView("/utc/apply/show.jsp");
+		Reimbursement reimbursement = Reimbursement.getByNumber(vo.getNumber());
+
+		if (reimbursement == null) { //创建
+			if (Reimbursement.add(vo) == 1) {
+				return new JspView("/utc/apply/show.jsp");
+			} else {
+				return new JspErrorView("添加信息失败");
+			}
 		} else {
-			return new JspErrorView("添加信息失败");
+			if ("审批驳回".equals(reimbursement.getState()) //驳回
+					|| "财务驳回".equals(reimbursement.getState())) {
+				reimbursement.setState("待提交");
+				reimbursement.setRemark(vo.getRemark());
+				if (Reimbursement.edit(reimbursement) == 1) {
+					return new JspView("/utc/apply/show.jsp");
+				} else {
+					return new JspErrorView("添加信息失败");
+				}
+			} else { //查看明细
+				if (Reimbursement.edit(reimbursement) == 1) {
+					return new JspView("/utc/apply/show.jsp");
+				} else {
+					return new JspErrorView("添加信息失败");
+				}
+			}
 		}
 	}
 

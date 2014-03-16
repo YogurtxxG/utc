@@ -13,23 +13,17 @@ import com.saturn.app.web.view.JsonView;
 import com.saturn.auth.User;
 import com.saturn.utc.Reimbursement;
 
-public class ListReimbursementAction implements IAction {
+public class ListReimbursementByUserAction implements IAction{
 	@Override
 	public IView execute(HttpServletRequest request,
 			HttpServletResponse response) {
+		
 		DataGridInfo dataGridInfo = new DataGridInfo(request);
-
-		/*Reimbursement reimbursement = new Reimbursement(null,
-		request.getParameter("projectName"),
-		request.getParameter("date"), null,
-		request.getParameter("userName"),
-		request.getParameter("state"),
-		request.getParameter("createTime"), null, null,
-		request.getParameter("number"),null);*/
 		
 		Reimbursement vo = BeanUtils.getBean(request,Reimbursement.class);
 		User user = (User)request.getSession().getAttribute("authUser");
-			vo.setUserId(user.getId());
+		if("guyu".equals(user.getId())){
+			vo.setState("待审核");
 			ListData<Reimbursement> data = Reimbursement.getReimbursements(
 					vo, dataGridInfo.getStartPage(),
 					dataGridInfo.getRows(), dataGridInfo.getSortId(),
@@ -37,9 +31,20 @@ public class ListReimbursementAction implements IAction {
 
 			return new JsonView(JSONUtils.getDataGridJSON(data.getTotal(),
 					data.getList()));
-		}
+		} else if("liuchunyu".equals(user.getId())){
+			vo.setState("待确认");
+			ListData<Reimbursement> data = Reimbursement.getReimbursements(
+					vo, dataGridInfo.getStartPage(),
+					dataGridInfo.getRows(), dataGridInfo.getSortId(),
+					dataGridInfo.getOreder());
+
+			return new JsonView(JSONUtils.getDataGridJSON(data.getTotal(),
+					data.getList()));
+		} else 
+			return null;
+	}
 	@Override
 	public String requestMapping() {
-		return "/app/utc/reimbursement/listReimbursement.action";
+		return "/app/utc/reimbursement/listReimbursementByUser.action";
 	}
 }

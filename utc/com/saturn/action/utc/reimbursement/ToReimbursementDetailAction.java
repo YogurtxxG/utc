@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.saturn.app.web.IAction;
 import com.saturn.app.web.IView;
 import com.saturn.app.web.view.JspView;
+import com.saturn.auth.User;
 import com.saturn.utc.Reimbursement;
 
 public class ToReimbursementDetailAction implements IAction {
@@ -13,13 +14,20 @@ public class ToReimbursementDetailAction implements IAction {
 	public IView execute(HttpServletRequest request,
 			HttpServletResponse response) {
 
+		User user = (User)request.getSession().getAttribute("authUser");
+		String name = user.getId();
 		Reimbursement vo = Reimbursement.getMaxNumber();
 		
 		String number = "";
 		if("".equals(vo.getNumber()) || vo.getNumber() == null ){
-			number = "201400000";
+			number += name + "_";
+			number += "201400000";
 		} else {
-			number = Integer.toString((Integer.parseInt(vo.getNumber()) + 1));
+			number += name + "_";
+			String voNumber = vo.getNumber();
+			voNumber = voNumber.substring(voNumber.length()-9, voNumber.length());
+			
+			number += Integer.toString((Integer.parseInt(voNumber) + 1));
 		}
 
 		return new JspView("/utc/apply/showDetail.jsp?numId="+number);

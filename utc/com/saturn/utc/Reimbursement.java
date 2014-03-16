@@ -66,6 +66,16 @@ public class Reimbursement {
 				null, mapping, Reimbursement.class);
 	}
 
+	public static Reimbursement getByNumber(String number) {
+		//指定值对象类型(VOClass)。例子VOClass=Reimbursement
+		//指定表主键(key)。例子:key=id
+		//指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
+		//指定O-R映射规则对象。默认mapping
+		return SimpleDaoTemplate.queryOne(
+				"SELECT * FROM utc_reimbursement WHERE 1 = 1 and number = '" + number + "'",
+				null, mapping, Reimbursement.class);
+	}
+	
 	public static Reimbursement getMaxNumber() {
 		//指定值对象类型(VOClass)。例子VOClass=Reimbursement
 		//指定表主键(key)。例子:key=id
@@ -81,11 +91,21 @@ public class Reimbursement {
 
 		return SimpleDaoTemplate.query(
 				"SELECT * FROM utc_reimbursement WHERE 1 = 1",
-				new DymaticCondition().addSimpleCondition(reimbursement, "id", "name",
-						"state", "phone").addCondition("ORDER BY {0} {1}",
+				new DymaticCondition().addSimpleCondition(reimbursement, "number", "projectName",
+						"state", "date", "userName", "userId").addCondition("ORDER BY {0} {1}",
 						orderBy, order), mapping, Reimbursement.class, start, offset);
 	}
 
+	public static ListData<Reimbursement> getReimbursementsAll(Reimbursement reimbursement, String start,
+			String offset, String orderBy, String order) {
+
+		return SimpleDaoTemplate.query(
+				"SELECT * FROM utc_reimbursement WHERE 1 = 1",
+				new DymaticCondition().addSimpleCondition(reimbursement, "number", "projectName",
+						"state", "date", "userName", "userId").addCondition("ORDER BY {0} {1}",
+						orderBy, order), mapping, Reimbursement.class, start, offset);
+	}
+	
 	public static int removeAllResource(String id) {
 		return SimpleDaoTemplate.update(
 				"DELETE FROM auth_re_Reimbursement_resource WHERE ReimbursementId = ?", id);

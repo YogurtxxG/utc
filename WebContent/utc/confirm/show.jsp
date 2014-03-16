@@ -15,7 +15,10 @@
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
-			url : '<%=request.getContextPath()%>/utc/json/datagrid_data1.json',
+			url : '<%=request.getContextPath()%>/app/utc/reimbursement/listReimbursementByUser.action',
+			queryParams : {
+				state :'待确认'
+			},
 			sortName : 'id',
 			sortOrder : 'desc',
 			remoteSort : true,
@@ -30,28 +33,37 @@
 				sortable : true
 			} ] ],
 			columns : [ [ {
-				field : 'project',
+				field : 'projectName',
 				title : '项目',
-				width : 120,
+				width : 200,
 				sortable : true
 			}, {
-				field : 'money',
+				field : 'money_total',
 				title : '金额',
-				width : 120,
+				width : 80,
 				sortable : true
 			}, {
-				field : 'createTime',
-				title : '时间',
-				width : 150	
+				field : 'number_total',
+				title : '数量',
+				width : 80,
+				sortable : true
+			},{
+				field : 'date',
+				title : '申报日期',
+				width : 120	
 			}, {
-				field : 'name',
+				field : 'userName',
 				title : '报销人',
-				width : 150	
+				width : 80	
 			}, {
 				field : 'state',
 				title : '状态',
-				width : 150	
+				width : 100	
 			}, {
+				field : 'remark',
+				title : '备注',
+				width : 150	
+			},{
 				field : 'opt',
 				title : '操作',
 				width : 100,
@@ -77,8 +89,7 @@
 						$.messager.alert('提示','只能选择一项','info');
 						return;
 					}
-					editVO(rows[0].id);
-					//window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUser.action?id='+rows[0].id;
+					window.location.href='<%=request.getContextPath()%>/utc/showDetail2.jsp?numId='+rows[0].number;
 					return false;
 				}
 			},'-',{
@@ -95,7 +106,7 @@
 						return;
 					}
 					
-					window.location.href='<%=request.getContextPath()%>/app/auth/user/showUserRoles.jsp?id=' + rows[0].id;
+					window.location.href='<%=request.getContextPath()%>/utc/pass.jsp?id=' + rows[0].id +'&type=2';
 					return false;
 				}
 			} ]
@@ -119,10 +130,11 @@
 	function queryVO() {
 		$('#queryTable').datagrid({
 			queryParams : {
-				id : $('#id').val(),
-				name : $('#name').val(),
-				email : $('#email').val(),
-				phone : $('#phone').val()
+				number : $('#number').val(),
+				projectName : $('#projectName').combobox('getValue'),
+				date : $('#date').datebox('getValue'),
+				userName : $('#userName').val(),
+				state : $('#state').val()
 			}});
 		$('#queryTable').datagrid("load");
 	}
@@ -140,19 +152,19 @@
 		<form id="queryForm" method="post">
 			<table>
 			<tr>	
-			<td>编号:</td>
-			<td><input id="id" type="text" name="id"></input></td>
+			<td>报销编号:</td>
+			<td><input id="number" type="text" name="number"></input></td>
 			<td>项目:</td>
-			<td><select id="project" class="easyui-combobox"
-						name="project" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
+			<td><select id="projectName" class="easyui-combobox"
+						name="projectName" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
 						 valueField="id"
 						textField="text" editable="false"></select></td>
 			<td>时间:</td>
-			<td><input id="createTime" type="text" name="createTime" class="easyui-datebox"></input></td>
+			<td><input id="date" type="text" name="date" class="easyui-datebox"></input></td>
 			<td>报销人 :</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="userName" type="text" name="userName"></input><td>
 			<td>状态:</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="state" type="text" name="state"></input><td>
 			</tr>
 			</table>
 			<div style="padding: 10px;" >

@@ -15,7 +15,7 @@
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
-			url : '<%=request.getContextPath()%>/app/utc/reimbursement/listReimbursement.action',
+			url : '<%=request.getContextPath()%>/app/utc/reimbursement/listReimbursementByUser.action',
 			queryParams : {
 				state :'待审核'
 			},
@@ -38,33 +38,32 @@
 				width : 200,
 				sortable : true
 			}, {
-				field : 'money',
+				field : 'money_total',
 				title : '金额',
-				width : 120,
+				width : 80,
 				sortable : true
 			}, {
-				field : 'createTime',
-				title : '时间',
-				width : 150	
+				field : 'money_total',
+				title : '数量',
+				width : 80,
+				sortable : true
+			}, {
+				field : 'date',
+				title : '申报日期',
+				width : 120	
 			}, {
 				field : 'userName',
 				title : '报销人',
-				width : 150	
+				width : 100	
 			}, {
 				field : 'state',
 				title : '状态',
-				width : 150	
-			}, {
-				field : 'opt',
-				title : '操作',
-				width : 100,
-				align : 'center',
-				rowspan : 2,
-				formatter : function(value, rec) {
-						return '<span><a href="#" onclick="editVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/edit.png" width="16" height="16" border="0" /></a>'+
-						'&nbsp&nbsp<a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
-				}
-			} ] ],
+				width : 100	
+			},{
+				field : 'remark',
+				title : '备注',
+				width : 200	
+			}] ],
 			pagination : true,
 			rownumbers : true,
 			toolbar : [{
@@ -80,8 +79,7 @@
 						$.messager.alert('提示','只能选择一项','info');
 						return;
 					}
-					editVO(rows[0].id);
-					//window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUser.action?id='+rows[0].id;
+					window.location.href='<%=request.getContextPath()%>/utc/showDetail.jsp?numId='+rows[0].number;
 					return false;
 				}
 			},'-',{
@@ -98,7 +96,7 @@
 						return;
 					}
 					
-					window.location.href='<%=request.getContextPath()%>/app/auth/user/showUserRoles.jsp?id=' + rows[0].id;
+					window.location.href='<%=request.getContextPath()%>/utc/pass.jsp?id=' + rows[0].id +'&type=1';
 					return false;
 				}
 			} ]
@@ -122,10 +120,11 @@
 	function queryVO() {
 		$('#queryTable').datagrid({
 			queryParams : {
-				id : $('#id').val(),
-				name : $('#name').val(),
-				email : $('#email').val(),
-				phone : $('#phone').val()
+				number : $('#number').val(),
+				projectName : $('#projectName').combobox('getValue'),
+				date : $('#date').datebox('getValue'),
+				userName : $('#userName').val(),
+				state : $('#state').val()
 			}});
 		$('#queryTable').datagrid("load");
 	}
@@ -143,23 +142,22 @@
 		<form id="queryForm" method="post">
 			<table>
 			<tr>	
-			<td>编号:</td>
-			<td><input id="id" type="text" name="id"></input></td>
+			<td>报销编号:</td>
+			<td><input id="number" type="text" name="number"></input></td>
 			<td>项目:</td>
-			<td><select id="project" class="easyui-combobox"
-						name="project" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
+			<td><select id="projectName" class="easyui-combobox"
+						name="projectName" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
 						 valueField="id"
 						textField="text" editable="false"></select></td>
 			<td>时间:</td>
-			<td><input id="createTime" type="text" name="createTime" class="easyui-datebox"></input></td>
+			<td><input id="date" type="text" name="date" class="easyui-datebox"></input></td>
 			<td>报销人 :</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
-			<td>状态:</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="userName" type="text" name="userName"></input><td>
+			<td><input id="state" type="hidden" name="state" value="待审核"></input><td>
 			</tr>
 			</table>
 			<div style="padding: 10px;" >
-				<a href="#" class="easyui-linkbutton" onclick="queryVO();" iconCls="icon-search">确定</a>
+				<a href="#" class="easyui-linkbutton" onclick="queryVO();" iconCls="icon-search">查询</a>
 				<a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a>
 			</div>
 		</form>

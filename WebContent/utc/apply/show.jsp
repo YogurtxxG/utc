@@ -7,6 +7,16 @@
 <title>报销信息</title>
 <%@ include file="/app/includes/header.jsp"%>
 <script type="text/javascript">
+$(function() {
+	$('#projectName').combobox({
+		width : 200,
+		onSelect : function(record){
+			$('#projectName').val(record.text);
+	    }
+	});
+});
+
+
 	$(function() {
 		$('#queryTable').datagrid({
 			title : '报销列表',
@@ -45,8 +55,8 @@
 				width : 120,
 				sortable : true
 			}, {
-				field : 'createTime',
-				title : '时间',
+				field : 'date',
+				title : '申报日期',
 				width : 150,
 				sortable : true	
 			}, {
@@ -151,10 +161,11 @@
 	function queryVO() {
 		$('#queryTable').datagrid({
 			queryParams : {
-				id : $('#id').val(),
-				name : $('#name').val(),
-				email : $('#email').val(),
-				phone : $('#phone').val()
+				number : $('#number').val(),
+				projectName : $('#projectName').combobox('getValue'),
+				date : $('#date').datebox('getValue'),
+				userName : $('#userName').val(),
+				state : $('#state').val()
 			}});
 		$('#queryTable').datagrid("load");
 	}
@@ -172,19 +183,19 @@
 		<form id="queryForm" method="post">
 		<table>
 			<tr>	
-			<td>编号:</td>
-			<td><input id="id" type="text" name="id"></input></td>
+			<td>报销编号:</td>
+			<td><input id="number" type="text" name="number"></input></td>
 			<td>项目:</td>
-			<td><select id="project" class="easyui-combobox"
-						name="project" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
+			<td><select id="projectName" class="easyui-combobox"
+						name="projectName" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
 						 valueField="id"
 						textField="text" editable="false"></select></td>
 			<td>时间:</td>
-			<td><input id="createTime" type="text" name="createTime" class="easyui-datebox"></input></td>
+			<td><input id="date" type="text" name="date" class="easyui-datebox"></input></td>
 			<td>报销人 :</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="userName" type="text" name=""userName""></input><td>
 			<td>状态:</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="state" type="text" name="state"></input><td>
 			</tr>
 			</table>
 			<div style="padding: 10px;" >
