@@ -69,18 +69,37 @@ $(function() {
 				title : '名称',
 				field : 'name',
 				width : 100,
-				sortable : true
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''){
+						return "总计";
+					}
+					return ''+value;
+				}
+				
 			} ] ],
 			columns : [ [ {
 				field : 'money',
 				title : '金额',
 				width : 80,
-				sortable : true
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''||isNaN(value)){
+						return "";
+					}
+					return ''+value;
+				}
 			}, {
 				field : 'number',
 				title : '数量',
 				width : 80,
-				sortable : true
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''||isNaN(value)){
+						return "";
+					}
+					return ''+value;
+				}
 			}, {
 				field : 'createTime',
 				title : '时间',
@@ -96,6 +115,9 @@ $(function() {
 				align : 'center',
 				rowspan : 2,
 				formatter : function(value, rec) {
+					if(rec.id==''){
+						return "";
+					}
 						return '<span><a href="#" onclick="editVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/edit.png" width="16" height="16" border="0" /></a>'+
 						'&nbsp&nbsp<a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
 				}

@@ -7,6 +7,16 @@
 <title>报销信息</title>
 <%@ include file="/app/includes/header.jsp"%>
 <script type="text/javascript">
+$(function() {
+	$('#projectName').combobox({
+		width : 200,
+		onSelect : function(record){
+			$('#projectName').val(record.text);
+	    }
+	});
+});
+
+
 	$(function() {
 		$('#queryTable').datagrid({
 			title : '报销列表',
@@ -15,45 +25,68 @@
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
-			url : '<%=request.getContextPath()%>/utc/json/datagrid_data2.json',
+			url : '<%=request.getContextPath()%>/app/utc/reimbursement/TotalReimbursement.action',
 			sortName : 'id',
 			sortOrder : 'desc',
 			remoteSort : true,
-			fitColumns: true,
-			rownumbers:true,
 			showFooter:true,
 			idField : 'id',//唯一标识列
 			frozenColumns : [ [ {//不可被删除的列
 				field : 'ck',
 				checkbox : true
-			}, {
-				title : '编号',
-				field : 'number',
-				width : 80,
-				sortable : true
 			} ] ],
-			columns : [ [ {
-				field : 'project',
-				title : '项目',
+			columns : [ [{
+				field : 'number',
+				title : '编号',
 				width : 120,
 				sortable : true
 			}, {
-				field : 'money',
+				field : 'projectName',
+				title : '项目',
+				width : 200,
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''){
+						return "总计";
+					}
+					return ''+value;
+				}
+			}, {
+				field : 'money_total',
 				title : '金额',
 				width : 120,
-				sortable : true
+				formatter:function(value,rec){
+					if(value==''||isNaN(value)){
+						return "";
+					}
+					return ''+value;
+				}
 			}, {
-				field : 'createTime',
-				title : '时间',
-				width : 150	
+				field : 'number_total',
+				title : '数量',
+				width : 120,
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''||isNaN(value)){
+						return "";
+					}
+					return ''+value;
+				}
 			}, {
-				field : 'name',
+				field : 'date',
+				title : '申报日期',
+				width : 150,
+				sortable : true	
+			}, {
+				field : 'userName',
 				title : '报销人',
-				width : 150	
+				width : 120,
+				sortable : true	
 			}, {
 				field : 'state',
 				title : '状态',
-				width : 150	
+				width : 100,
+				sortable : true	
 			}, {
 				field : 'opt',
 				title : '操作',
@@ -61,28 +94,31 @@
 				align : 'center',
 				rowspan : 2,
 				formatter : function(value, rec) {
-						return '<span><a href="#" onclick="editVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/edit.png" width="16" height="16" border="0" /></a>'+
-						'&nbsp&nbsp<a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
+					if(rec.id==''){
+						return "";
+					}
+					return '<span><a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
 				}
 			} ] ],
 			pagination : true,
 			rownumbers : true,
+			showFooter : true,
 			toolbar : [ {
 				id : 'btnadd',
-				text : '查看详情',
+				text : '查看明细',
 				iconCls : 'icon-add',
 				handler : function() {
-					window.location.href='<%=request.getContextPath()%>/utc/apply/add.jsp';
+					window.location.href='<%=request.getContextPath()%>/utc/apply/toReimbursementDetail.action';
 					return false;//解决IE6的不跳转的bug
 				}
 			}]
 		});
 	});
 	
-	function deleteVO(id){
+	function deleteVO(id,number){
 		$.messager.confirm('确认删除项', '确认删除该选项', function(result){
 			if (result){
-				window.location.href='<%=request.getContextPath()%>/app/auth/user/deleteUser.action?ids=' + id;
+				window.location.href='<%=request.getContextPath()%>/utc/reimbursement/deleteReimbursement.action?ids=' + id;
 			}
 		});
 		return false;
@@ -93,13 +129,19 @@
 		return false;
 	}
 	
+	function viewVO(id){
+		window.location.href='<%=request.getContextPath()%>/utc/state/show.jsp?id='+ id;
+		return false;
+	}
+	
 	function queryVO() {
 		$('#queryTable').datagrid({
 			queryParams : {
-				id : $('#id').val(),
-				name : $('#name').val(),
-				email : $('#email').val(),
-				phone : $('#phone').val()
+				number : $('#number').val(),
+				projectName : $('#projectName').combobox('getValue'),
+				date : $('#date').datebox('getValue'),
+				userName : $('#userName').val(),
+				state : $('#state').val()
 			}});
 		$('#queryTable').datagrid("load");
 	}
@@ -115,21 +157,21 @@
 		style="padding: 10px;">
 
 		<form id="queryForm" method="post">
-			<table>
+		<table>
 			<tr>	
-			<td>编号:</td>
-			<td><input id="id" type="text" name="id"></input></td>
+			<td>报销编号:</td>
+			<td><input id="number" type="text" name="number"></input></td>
 			<td>项目:</td>
-			<td><select id="project" class="easyui-combobox"
-						name="project" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
+			<td><select id="projectName" class="easyui-combobox"
+						name="projectName" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
 						 valueField="id"
 						textField="text" editable="false"></select></td>
 			<td>时间:</td>
-			<td><input id="createTime" type="text" name="createTime" class="easyui-datebox"></input></td>
+			<td><input id="date" type="text" name="date" class="easyui-datebox"></input></td>
 			<td>报销人 :</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="userName" type="text" name=""userName""></input><td>
 			<td>状态:</td>
-			<td><input id="phone" type="text" name="phone"></input><td>
+			<td><input id="state" type="text" name="state"></input><td>
 			</tr>
 			</table>
 			<div style="padding: 10px;" >
@@ -137,6 +179,7 @@
 				<a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a>
 			</div>
 		</form>
+		
 	</div>
 	<table id="queryTable"></table>
 </body>

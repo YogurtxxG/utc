@@ -77,16 +77,6 @@ public class ReimbursementDetail {
 						orderBy, order), mapping, ReimbursementDetail.class, start, offset);
 	}
 
-	public static ListData<ReimbursementDetail> getReimbursementDetailsSum(ReimbursementDetail reimbursementDetail, String start,
-			String offset, String orderBy, String order) {
-
-		return SimpleDaoTemplate.query(
-				"SELECT sum(money) money, sum(number) number FROM utc_reimbursement_detail WHERE 1 = 1",
-				new DymaticCondition().addSimpleCondition(reimbursementDetail, "numId", "projectname",
-						"state", "date").addCondition("ORDER BY {0} {1}",
-						orderBy, order), mapping, ReimbursementDetail.class, start, offset);
-	}
-	
 	public static int removeAllResource(String id) {
 		return SimpleDaoTemplate.update(
 				"DELETE FROM auth_re_ReimbursementDetail_resource WHERE ReimbursementDetailId = ?", id);

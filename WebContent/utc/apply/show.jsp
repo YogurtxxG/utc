@@ -29,6 +29,7 @@ $(function() {
 			sortName : 'id',
 			sortOrder : 'desc',
 			remoteSort : true,
+			showFooter:true,
 			idField : 'id',//唯一标识列
 			frozenColumns : [ [ {//不可被删除的列
 				field : 'ck',
@@ -43,17 +44,34 @@ $(function() {
 				field : 'projectName',
 				title : '项目',
 				width : 200,
-				sortable : true
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''){
+						return "总计";
+					}
+					return ''+value;
+				}
 			}, {
 				field : 'money_total',
 				title : '金额',
 				width : 120,
-				
+				formatter:function(value,rec){
+					if(value==''||isNaN(value)){
+						return "";
+					}
+					return ''+value;
+				}
 			}, {
 				field : 'number_total',
 				title : '数量',
 				width : 120,
-				sortable : true
+				sortable : true,
+				formatter:function(value,rec){
+					if(value==''||isNaN(value)){
+						return "";
+					}
+					return ''+value;
+				}
 			}, {
 				field : 'date',
 				title : '申报日期',
@@ -76,12 +94,15 @@ $(function() {
 				align : 'center',
 				rowspan : 2,
 				formatter : function(value, rec) {
-						return '<span><a href="#" onclick="editVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/edit.png" width="16" height="16" border="0" /></a>'+
-						'&nbsp&nbsp<a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
+					if(rec.id==''){
+						return "";
+					}
+					return '<span><a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
 				}
 			} ] ],
 			pagination : true,
 			rownumbers : true,
+			showFooter : true,
 			toolbar : [ {
 				id : 'btnadd',
 				text : '创建',
@@ -155,6 +176,11 @@ $(function() {
 	
 	function editVO(id){
 		window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUser.action?id='+ id;
+		return false;
+	}
+	
+	function viewVO(id){
+		window.location.href='<%=request.getContextPath()%>/utc/state/show.jsp?id='+ id;
 		return false;
 	}
 	
