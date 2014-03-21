@@ -26,99 +26,138 @@ public class Reimbursement {
 
 	private static ORMapping<Reimbursement> mapping = new ResultORMapping<Reimbursement>();
 
-	public static int add(Reimbursement reimbursement) {
-		return SimpleDaoTemplate
-				.update("INSERT INTO utc_reimbursement(projectName, date, userId, userName, state, createTime, money_total, number_total, number, remark) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-						reimbursement.getProjectName(),
-						reimbursement.getDate(), reimbursement.getUserId(),
-						reimbursement.getUserName(), reimbursement.getState(),
-						reimbursement.getCreateTime(),
-						reimbursement.getMoney_total(),
-						reimbursement.getNumber_total(),
-						reimbursement.getNumber(),
-						reimbursement.getRemark());
+	public static int add(final Reimbursement reimbursement) {
+		return SimpleDaoTemplate.update(new ITransaction() {
 
+			@Override
+			public int execute(Connection connection) {
+				SimpleDaoTemplate
+						.update(connection, "INSERT INTO utc_reimbursement(projectName, date, userId, userName, state, createTime, money_total, number_total, number, remark) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+								reimbursement.getProjectName(),
+								reimbursement.getDate(),
+								reimbursement.getUserId(),
+								reimbursement.getUserName(),
+								reimbursement.getState(),
+								reimbursement.getCreateTime(),
+								reimbursement.getMoney_total(),
+								reimbursement.getNumber_total(),
+								reimbursement.getNumber(),
+								reimbursement.getRemark());
+				
+				ReimbursementDetail.updateTotal(connection, reimbursement.getNumber());
+				return 1;
+
+			}
+		});
 	}
 
-
-	public static int edit(Reimbursement reimbursement) {
+/*	public static int edit(Reimbursement reimbursement) {
 		return SimpleDaoTemplate
 				.update("UPDATE utc_reimbursement SET projectName = ?, date = ?, userId = ?,"
 						+ " userName = ?, state = ?, createTime = ?, money_total = ? , number_total = ?, number = ?, remark = ? "
-						+ "WHERE id = ?",
-						reimbursement.getProjectName(),
+						+ "WHERE id = ?", reimbursement.getProjectName(),
 						reimbursement.getDate(), reimbursement.getUserId(),
 						reimbursement.getUserName(), reimbursement.getState(),
 						reimbursement.getCreateTime(),
 						reimbursement.getMoney_total(),
 						reimbursement.getNumber_total(),
-						reimbursement.getNumber(),
-						reimbursement.getRemark(),reimbursement.getId());
+						reimbursement.getNumber(), reimbursement.getRemark(),
+						reimbursement.getId());
+	}
+*/
+	public static int edit(Connection connection, Reimbursement reimbursement) {
+
+		String sql = "UPDATE utc_reimbursement SET projectName = ?, date = ?, userId = ?,"
+				+ " userName = ?, state = ?, createTime = ?, money_total = ? , number_total = ?, number = ?, remark = ? "
+				+ "WHERE id = ?";
+		String[] values = { reimbursement.getProjectName(),
+				reimbursement.getDate(), reimbursement.getUserId(),
+				reimbursement.getUserName(), reimbursement.getState(),
+				reimbursement.getCreateTime(), reimbursement.getMoney_total(),
+				reimbursement.getNumber_total(), reimbursement.getNumber(),
+				reimbursement.getRemark(), reimbursement.getId() };
+
+		if (connection != null) {
+			return SimpleDaoTemplate.update(connection, sql, values);
+		} else {
+			return SimpleDaoTemplate.update(sql, values);
+		}
+
 	}
 
 	public static Reimbursement get(String id) {
-		//指定值对象类型(VOClass)。例子VOClass=Reimbursement
-		//指定表主键(key)。例子:key=id
-		//指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
-		//指定O-R映射规则对象。默认mapping
+		// 指定值对象类型(VOClass)。例子VOClass=Reimbursement
+		// 指定表主键(key)。例子:key=id
+		// 指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
+		// 指定O-R映射规则对象。默认mapping
 		return SimpleDaoTemplate.queryOne(
-				"SELECT * FROM utc_reimbursement WHERE 1 = 1 and id = '" + id + "'",
-				null, mapping, Reimbursement.class);
+				"SELECT * FROM utc_reimbursement WHERE 1 = 1 and id = '" + id
+						+ "'", null, mapping, Reimbursement.class);
 	}
 
 	public static Reimbursement getByNumber(String number) {
-		//指定值对象类型(VOClass)。例子VOClass=Reimbursement
-		//指定表主键(key)。例子:key=id
-		//指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
-		//指定O-R映射规则对象。默认mapping
+		// 指定值对象类型(VOClass)。例子VOClass=Reimbursement
+		// 指定表主键(key)。例子:key=id
+		// 指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
+		// 指定O-R映射规则对象。默认mapping
 		return SimpleDaoTemplate.queryOne(
-				"SELECT * FROM utc_reimbursement WHERE 1 = 1 and number = '" + number + "'",
-				null, mapping, Reimbursement.class);
+				"SELECT * FROM utc_reimbursement WHERE 1 = 1 and number = '"
+						+ number + "'", null, mapping, Reimbursement.class);
 	}
-	
+
 	public static Reimbursement getMaxNumber() {
-		//指定值对象类型(VOClass)。例子VOClass=Reimbursement
-		//指定表主键(key)。例子:key=id
-		//指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
-		//指定O-R映射规则对象。默认mapping
-		return SimpleDaoTemplate.queryOne(
-				"SELECT max(number) as number FROM utc_reimbursement WHERE 1 = 1",
-				null, mapping, Reimbursement.class);
+		// 指定值对象类型(VOClass)。例子VOClass=Reimbursement
+		// 指定表主键(key)。例子:key=id
+		// 指定插入表名称(tableName)。例子：如Reimbursement表，tableName=Reimbursement
+		// 指定O-R映射规则对象。默认mapping
+		return SimpleDaoTemplate
+				.queryOne(
+						"SELECT max(number) as number FROM utc_reimbursement WHERE 1 = 1",
+						null, mapping, Reimbursement.class);
 	}
-	
-	public static ListData<Reimbursement> getReimbursements(Reimbursement reimbursement, String start,
-			String offset, String orderBy, String order) {
+
+	public static ListData<Reimbursement> getReimbursements(
+			Reimbursement reimbursement, String start, String offset,
+			String orderBy, String order) {
 
 		return SimpleDaoTemplate.query(
 				"SELECT * FROM utc_reimbursement WHERE 1 = 1",
-				new DymaticCondition().addSimpleCondition(reimbursement, "number", "projectName",
-						"state", "date", "userName", "userId").addCondition("ORDER BY {0} {1}",
-						orderBy, order), mapping, Reimbursement.class, start, offset);
-	}
-	
-	public static ListData<Reimbursement> getReimbursementsSum(Reimbursement reimbursement, String start,
-			String offset, String orderBy, String order) {
-
-		return SimpleDaoTemplate.query(
-				"SELECT sum(money_total) as money_total,sum(number_total) as number_total FROM utc_reimbursement WHERE 1 = 1",
-				new DymaticCondition().addSimpleCondition(reimbursement, "number", "projectName",
-						"state", "date", "userName", "userId").addCondition("ORDER BY {0} {1}",
-						orderBy, order), mapping, Reimbursement.class, start, offset);
+				new DymaticCondition().addSimpleCondition(reimbursement,
+						"number", "projectName", "state", "date", "userName",
+						"userId").addCondition("ORDER BY {0} {1}", orderBy,
+						order), mapping, Reimbursement.class, start, offset);
 	}
 
-	public static ListData<Reimbursement> getReimbursementsAll(Reimbursement reimbursement, String start,
-			String offset, String orderBy, String order) {
+	public static ListData<Reimbursement> getReimbursementsSum(
+			Reimbursement reimbursement, String start, String offset,
+			String orderBy, String order) {
+
+		return SimpleDaoTemplate
+				.query("SELECT sum(money_total) as money_total,sum(number_total) as number_total FROM utc_reimbursement WHERE 1 = 1",
+						new DymaticCondition().addSimpleCondition(
+								reimbursement, "number", "projectName",
+								"state", "date", "userName", "userId")
+								.addCondition("ORDER BY {0} {1}", orderBy,
+										order), mapping, Reimbursement.class,
+						start, offset);
+	}
+
+	public static ListData<Reimbursement> getReimbursementsAll(
+			Reimbursement reimbursement, String start, String offset,
+			String orderBy, String order) {
 
 		return SimpleDaoTemplate.query(
 				"SELECT * FROM utc_reimbursement WHERE 1 = 1",
-				new DymaticCondition().addSimpleCondition(reimbursement, "number", "projectName",
-						"state", "date", "userName", "userId").addCondition("ORDER BY {0} {1}",
-						orderBy, order), mapping, Reimbursement.class, start, offset);
+				new DymaticCondition().addSimpleCondition(reimbursement,
+						"number", "projectName", "state", "date", "userName",
+						"userId").addCondition("ORDER BY {0} {1}", orderBy,
+						order), mapping, Reimbursement.class, start, offset);
 	}
-	
+
 	public static int removeAllResource(String id) {
-		return SimpleDaoTemplate.update(
-				"DELETE FROM auth_re_Reimbursement_resource WHERE ReimbursementId = ?", id);
+		return SimpleDaoTemplate
+				.update("DELETE FROM auth_re_Reimbursement_resource WHERE ReimbursementId = ?",
+						id);
 	}
 
 	public static int remove(final String id) {
@@ -157,12 +196,13 @@ public class Reimbursement {
 	}
 
 	public static int removeAllRole(String ReimbursementId) {
-		return SimpleDaoTemplate.update(
-				"DELETE FROM auth_re_Reimbursement_role WHERE ReimbursementId = ?", ReimbursementId);
+		return SimpleDaoTemplate
+				.update("DELETE FROM auth_re_Reimbursement_role WHERE ReimbursementId = ?",
+						ReimbursementId);
 	}
 
-	public static ListData<Reimbursement> getReimbursementsByRoleId(String roleId, String start,
-			String offset, String orderBy) {
+	public static ListData<Reimbursement> getReimbursementsByRoleId(
+			String roleId, String start, String offset, String orderBy) {
 
 		return SimpleDaoTemplate
 				.query("SELECT Reimbursement.* FROM auth_Reimbursements Reimbursement, auth_re_Reimbursement_role ReimbursementRole WHERE 1=1 and Reimbursement.id = ReimbursementRole.ReimbursementId",
@@ -173,13 +213,13 @@ public class Reimbursement {
 
 	}
 
-
 	public Reimbursement() {
 	}
 
 	public Reimbursement(String id, String projectName, String date,
 			String userId, String userName, String state, String createTime,
-			String money_total, String number_total, String number, String remark) {
+			String money_total, String number_total, String number,
+			String remark) {
 		this.id = id;
 		this.projectName = projectName;
 		this.date = date;
@@ -265,26 +305,21 @@ public class Reimbursement {
 		this.number_total = number_total;
 	}
 
-	
 	public String getNumber() {
 		return number;
 	}
-
 
 	public void setNumber(String number) {
 		this.number = number;
 	}
 
-
 	public String getRemark() {
 		return remark;
 	}
 
-
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
 
 	@Override
 	public int hashCode() {

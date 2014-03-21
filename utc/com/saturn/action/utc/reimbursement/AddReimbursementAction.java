@@ -29,13 +29,13 @@ public class AddReimbursementAction implements IAction {
 					|| "财务驳回".equals(reimbursement.getState())) {
 				reimbursement.setState("待提交");
 				reimbursement.setRemark(vo.getRemark());
-				if (Reimbursement.edit(reimbursement) == 1) {
+				if (Reimbursement.edit(null,reimbursement) == 1) {
 					return new JspView("/utc/apply/show.jsp");
 				} else {
 					return new JspErrorView("添加信息失败");
 				}
 			} else { //查看明细
-				if (Reimbursement.edit(reimbursement) == 1) {
+				if (Reimbursement.edit(null,reimbursement) == 1) {
 					return new JspView("/utc/apply/show.jsp");
 				} else {
 					return new JspErrorView("添加信息失败");

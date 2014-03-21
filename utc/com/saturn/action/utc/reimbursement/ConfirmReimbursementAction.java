@@ -32,7 +32,7 @@ public class ConfirmReimbursementAction implements 	IAction{
 						createTime, vo.getMoney_total(), vo.getNumber_total(),
 						vo.getRemark());
 				
-				if (Reimbursement.edit(vo) == 1) {
+				if (Reimbursement.edit(null, vo) == 1) {
 					if(ReimbursementState.add(reimbursementState) == 1){
 						return new JspView("/utc/check/show.jsp");
 					}
@@ -51,7 +51,7 @@ public class ConfirmReimbursementAction implements 	IAction{
 						createTime, vo.getMoney_total(), vo.getNumber_total(),
 						vo.getRemark());
 				
-				if (Reimbursement.edit(vo) == 1) {
+				if (Reimbursement.edit(null, vo) == 1) {
 					if(ReimbursementState.add(reimbursementState) == 1){
 						return new JspView("/utc/check/show.jsp");
 					}
@@ -73,7 +73,7 @@ public class ConfirmReimbursementAction implements 	IAction{
 						createTime, vo.getMoney_total(), vo.getNumber_total(),
 						vo.getRemark());
 				
-				if (Reimbursement.edit(vo) == 1) {
+				if (Reimbursement.edit(null, vo) == 1) {
 					if(ReimbursementState.add(reimbursementState) == 1){
 						return new JspView("/utc/check/show.jsp");
 					}
@@ -92,7 +92,7 @@ public class ConfirmReimbursementAction implements 	IAction{
 						createTime, vo.getMoney_total(), vo.getNumber_total(),
 						vo.getRemark());
 				
-				if (Reimbursement.edit(vo) == 1) {
+				if (Reimbursement.edit(null, vo) == 1) {
 					if(ReimbursementState.add(reimbursementState) == 1){
 						return new JspView("/utc/check/show.jsp");
 					}
