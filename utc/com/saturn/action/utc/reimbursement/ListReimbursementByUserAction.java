@@ -28,18 +28,27 @@ public class ListReimbursementByUserAction implements IAction{
 					vo, dataGridInfo.getStartPage(),
 					dataGridInfo.getRows(), dataGridInfo.getSortId(),
 					dataGridInfo.getOreder());
+			
+			ListData<Reimbursement> data1 = Reimbursement.getReimbursementsSum(
+					vo, dataGridInfo.getStartPage(),
+					dataGridInfo.getRows(), dataGridInfo.getSortId(),
+					dataGridInfo.getOreder());
 
 			return new JsonView(JSONUtils.getDataGridJSON(data.getTotal(),
-					data.getList()));
+					data.getList(),data1.getList()));
 		} else if("liuchunyu".equals(user.getId())){
 			vo.setState("待确认");
 			ListData<Reimbursement> data = Reimbursement.getReimbursements(
 					vo, dataGridInfo.getStartPage(),
 					dataGridInfo.getRows(), dataGridInfo.getSortId(),
 					dataGridInfo.getOreder());
+			ListData<Reimbursement> data1 = Reimbursement.getReimbursementsSum(
+					vo, dataGridInfo.getStartPage(),
+					dataGridInfo.getRows(), dataGridInfo.getSortId(),
+					dataGridInfo.getOreder());
 
 			return new JsonView(JSONUtils.getDataGridJSON(data.getTotal(),
-					data.getList()));
+					data.getList(), data1.getList()));
 		} else 
 			return null;
 	}

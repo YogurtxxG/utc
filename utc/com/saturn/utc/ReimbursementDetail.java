@@ -1,11 +1,8 @@
 package com.saturn.utc;
 
-import java.sql.Connection;
-
 import org.json.JSONObject;
 
 import com.saturn.app.db.DymaticCondition;
-import com.saturn.app.db.ITransaction;
 import com.saturn.app.db.ListData;
 import com.saturn.app.db.ORMapping;
 import com.saturn.app.db.ResultORMapping;
@@ -27,34 +24,25 @@ public class ReimbursementDetail {
 	private static ORMapping<ReimbursementDetail> mapping = new ResultORMapping<ReimbursementDetail>();
 
 	public static int add(final ReimbursementDetail reimbursementDetail) {
-		return SimpleDaoTemplate.update(new ITransaction() {
+		SimpleDaoTemplate
+				.update("INSERT INTO utc_reimbursement_detail(name, money, money_total, number, number_total, state, createTime, remark, userId, numId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+						reimbursementDetail.getName(),
+						reimbursementDetail.getMoney(),
+						reimbursementDetail.getMoney_total(),
+						reimbursementDetail.getNumber(),
+						reimbursementDetail.getNumber_total(),
+						reimbursementDetail.getState(),
+						reimbursementDetail.getCreateTime(),
+						reimbursementDetail.getRemark(),
+						reimbursementDetail.getUserId(),
+						reimbursementDetail.getNumId());
 
-			@Override
-			public int execute(Connection connection) {
-
-				SimpleDaoTemplate
-						.update(connection,
-								"INSERT INTO utc_reimbursement_detail(name, money, money_total, number, number_total, state, createTime, remark, userId, numId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-								reimbursementDetail.getName(),
-								reimbursementDetail.getMoney(),
-								reimbursementDetail.getMoney_total(),
-								reimbursementDetail.getNumber(),
-								reimbursementDetail.getNumber_total(),
-								reimbursementDetail.getState(),
-								reimbursementDetail.getCreateTime(),
-								reimbursementDetail.getRemark(),
-								reimbursementDetail.getUserId(),
-								reimbursementDetail.getNumId());
-
-				updateTotal(connection, reimbursementDetail.getNumId());
-				return 1;
-
-			}
-		});
+		updateTotal(reimbursementDetail.getNumId());
+		return 1;
 
 	}
 
-	public static void updateTotal(Connection connection, String id) {
+	public static void updateTotal(String id) {
 		Reimbursement reimbursement = Reimbursement.getByNumber(id);
 
 		if (reimbursement != null && reimbursement.getId() != null) {
@@ -64,7 +52,7 @@ public class ReimbursementDetail {
 
 			reimbursement.setMoney_total(totalMoney + "");
 			reimbursement.setNumber_total(totalNumber + "");
-			Reimbursement.edit(connection, reimbursement);
+			Reimbursement.edit(reimbursement);
 		}
 	}
 
@@ -81,15 +69,10 @@ public class ReimbursementDetail {
 	}
 
 	public static int edit(final ReimbursementDetail reimbursementDetail) {
-		return SimpleDaoTemplate.update(new ITransaction() {
-
-			@Override
-			public int execute(Connection connection) {
-				SimpleDaoTemplate.update(connection, 
-						"UPDATE utc_reimbursement_detail SET name = ?, money = ?, money_total = ?, number = ?,"
-								+ " number_total = ?, state = ?, createTime = ?, remark = ?, userId = ?, numId = ? "
-								+ "WHERE id = ?",
-						reimbursementDetail.getName(),
+		SimpleDaoTemplate
+				.update("UPDATE utc_reimbursement_detail SET name = ?, money = ?, money_total = ?, number = ?,"
+						+ " number_total = ?, state = ?, createTime = ?, remark = ?, userId = ?, numId = ? "
+						+ "WHERE id = ?", reimbursementDetail.getName(),
 						reimbursementDetail.getMoney(),
 						reimbursementDetail.getMoney_total(),
 						reimbursementDetail.getNumber(),
@@ -101,11 +84,9 @@ public class ReimbursementDetail {
 						reimbursementDetail.getNumId(),
 						reimbursementDetail.getId());
 
-				updateTotal(connection, reimbursementDetail.getNumId());
+		updateTotal(reimbursementDetail.getNumId());
 
-				return 1;
-			}
-		});
+		return 1;
 	}
 
 	public static ReimbursementDetail get(String id) {
@@ -150,18 +131,11 @@ public class ReimbursementDetail {
 	}
 
 	public static int remove(final String id) {
-		return SimpleDaoTemplate.update(new ITransaction() {
-
-			@Override
-			public int execute(Connection connection) {
-				SimpleDaoTemplate
-						.update(connection, "DELETE FROM utc_reimbursement_detail WHERE id = ?",
-								id);
-				ReimbursementDetail reimbursementDetail = get(id);	
-				updateTotal(connection, reimbursementDetail.getNumId());
-				return 1;
-			}
-		});
+		SimpleDaoTemplate.update(
+				"DELETE FROM utc_reimbursement_detail WHERE id = ?", id);
+		ReimbursementDetail reimbursementDetail = get(id);
+		updateTotal(reimbursementDetail.getNumId());
+		return 1;
 	}
 
 	public static int removeByNumber(final String numId) {

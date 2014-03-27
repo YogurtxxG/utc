@@ -148,7 +148,7 @@ $(function() {
 			} , '-' ,{
 					id : 'btnedit',
 					text : '打印',
-					iconCls : 'icon-manger',
+					iconCls : 'icon-print',
 					handler : function() {
 						var rows = $('#queryTable').datagrid('getSelections');
 						if (rows.length == 0) {
@@ -158,7 +158,8 @@ $(function() {
 							$.messager.alert('提示','只能选择一项','info');
 							return;
 						}
-						window.location.href='<%=request.getContextPath()%>/app/auth/user/queryUserRecource.action?id=' + rec.number;
+						<%-- window.location.href='<%=request.getContextPath()%>/utc/apply/print.jsp?id=' + rows[0].id; --%>
+						window.open ('<%=request.getContextPath()%>/utc/apply/print.jsp?id='+rows[0].id,'打印页面','height=600,width=800,top=0,left=0,toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no');
 						return false;
 					}
 				}]
@@ -203,7 +204,7 @@ $(function() {
 </head>
 <body>
 	<div id="panel" class="easyui-panel" title="查询条件"
-		icon="icon-query-form" collapsible="true"
+		icon="icon-query-form" collapsible="true" collapsed="true"
 		style="padding: 10px;">
 
 		<form id="queryForm" method="post">
@@ -225,7 +226,7 @@ $(function() {
 			</tr>
 			</table>
 			<div style="padding: 10px;" >
-				<a href="#" class="easyui-linkbutton" onclick="queryVO();" iconCls="icon-search">确定</a>
+				<a href="#" class="easyui-linkbutton" onclick="queryVO();" iconCls="icon-ok">确定</a>
 				<a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a>
 			</div>
 		</form>

@@ -9,6 +9,9 @@
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/testCode.js"></script>
 <title>登录页面</title>
+<style type="text/css">
+	#bg{position:fixed;width:100%;height:100%}
+</style>
 <script type="text/javascript">
 	var code = __getTestCode();
 

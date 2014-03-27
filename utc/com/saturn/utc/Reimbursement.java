@@ -27,62 +27,77 @@ public class Reimbursement {
 	private static ORMapping<Reimbursement> mapping = new ResultORMapping<Reimbursement>();
 
 	public static int add(final Reimbursement reimbursement) {
-		return SimpleDaoTemplate.update(new ITransaction() {
-
-			@Override
-			public int execute(Connection connection) {
-				SimpleDaoTemplate
-						.update(connection, "INSERT INTO utc_reimbursement(projectName, date, userId, userName, state, createTime, money_total, number_total, number, remark) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-								reimbursement.getProjectName(),
-								reimbursement.getDate(),
-								reimbursement.getUserId(),
-								reimbursement.getUserName(),
-								reimbursement.getState(),
-								reimbursement.getCreateTime(),
-								reimbursement.getMoney_total(),
-								reimbursement.getNumber_total(),
-								reimbursement.getNumber(),
-								reimbursement.getRemark());
-				
-				ReimbursementDetail.updateTotal(connection, reimbursement.getNumber());
-				return 1;
-
-			}
-		});
-	}
-
-/*	public static int edit(Reimbursement reimbursement) {
-		return SimpleDaoTemplate
-				.update("UPDATE utc_reimbursement SET projectName = ?, date = ?, userId = ?,"
-						+ " userName = ?, state = ?, createTime = ?, money_total = ? , number_total = ?, number = ?, remark = ? "
-						+ "WHERE id = ?", reimbursement.getProjectName(),
+		SimpleDaoTemplate
+				.update("INSERT INTO utc_reimbursement(projectName, date, userId, userName, state, createTime, money_total, number_total, number, remark) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+						reimbursement.getProjectName(),
 						reimbursement.getDate(), reimbursement.getUserId(),
 						reimbursement.getUserName(), reimbursement.getState(),
 						reimbursement.getCreateTime(),
 						reimbursement.getMoney_total(),
 						reimbursement.getNumber_total(),
-						reimbursement.getNumber(), reimbursement.getRemark(),
-						reimbursement.getId());
+						reimbursement.getNumber(), reimbursement.getRemark());
+
+		ReimbursementDetail.updateTotal(reimbursement.getNumber());
+		// return SimpleDaoTemplate.update(new ITransaction() {
+		//
+		// @Override
+		// public int execute(Connection connection) {
+		// SimpleDaoTemplate
+		// .update(connection,
+		// "INSERT INTO utc_reimbursement(projectName, date, userId, userName, state, createTime, money_total, number_total, number, remark) VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		// reimbursement.getProjectName(),
+		// reimbursement.getDate(),
+		// reimbursement.getUserId(),
+		// reimbursement.getUserName(),
+		// reimbursement.getState(),
+		// reimbursement.getCreateTime(),
+		// reimbursement.getMoney_total(),
+		// reimbursement.getNumber_total(),
+		// reimbursement.getNumber(),
+		// reimbursement.getRemark());
+		//
+		// ReimbursementDetail.updateTotal(connection,
+		// reimbursement.getNumber());
+		// return 1;
+		//
+		// }
+		// });
+		
+		return 1;
 	}
-*/
-	public static int edit(Connection connection, Reimbursement reimbursement) {
+
+	/*
+	 * public static int edit(Reimbursement reimbursement) { return
+	 * SimpleDaoTemplate
+	 * .update("UPDATE utc_reimbursement SET projectName = ?, date = ?, userId = ?,"
+	 * +
+	 * " userName = ?, state = ?, createTime = ?, money_total = ? , number_total = ?, number = ?, remark = ? "
+	 * + "WHERE id = ?", reimbursement.getProjectName(),
+	 * reimbursement.getDate(), reimbursement.getUserId(),
+	 * reimbursement.getUserName(), reimbursement.getState(),
+	 * reimbursement.getCreateTime(), reimbursement.getMoney_total(),
+	 * reimbursement.getNumber_total(), reimbursement.getNumber(),
+	 * reimbursement.getRemark(), reimbursement.getId()); }
+	 */
+	public static int edit(Reimbursement reimbursement) {
 
 		String sql = "UPDATE utc_reimbursement SET projectName = ?, date = ?, userId = ?,"
 				+ " userName = ?, state = ?, createTime = ?, money_total = ? , number_total = ?, number = ?, remark = ? "
 				+ "WHERE id = ?";
+		
+		String id = reimbursement.getNumber();
+		String totalMoney = ReimbursementDetail.getTotalMoney(id) + "";
+		String totalNumber = ReimbursementDetail.getTotalNumber(id) + "";
+		
 		String[] values = { reimbursement.getProjectName(),
 				reimbursement.getDate(), reimbursement.getUserId(),
 				reimbursement.getUserName(), reimbursement.getState(),
-				reimbursement.getCreateTime(), reimbursement.getMoney_total(),
-				reimbursement.getNumber_total(), reimbursement.getNumber(),
+				reimbursement.getCreateTime(), totalMoney,
+				totalNumber, reimbursement.getNumber(),
 				reimbursement.getRemark(), reimbursement.getId() };
 
-		if (connection != null) {
-			return SimpleDaoTemplate.update(connection, sql, values);
-		} else {
-			return SimpleDaoTemplate.update(sql, values);
-		}
-
+		 SimpleDaoTemplate.update(sql, values);
+		 return 1;
 	}
 
 	public static Reimbursement get(String id) {

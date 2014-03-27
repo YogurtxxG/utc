@@ -153,7 +153,7 @@ $(function() {
 </head>
 <body>
 	<div id="panel" class="easyui-panel" title="查询条件"
-		icon="icon-query-form" collapsible="true"
+		icon="icon-query-form" collapsible="true" collapsed="true"
 		style="padding: 10px;">
 
 		<form id="queryForm" method="post">

@@ -9,6 +9,7 @@
 	 	<jdbcurl><![CDATA[jdbc:mysql://localhost:3306/utc?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false]]></jdbcurl>
 		<username>root</username>
 		<password>root</password>
+		<!-- <password>999</password> -->
 		<!-- DataBase pool configuration -->
 		<maxActive>30</maxActive>
 		<maxIdle>10</maxIdle>

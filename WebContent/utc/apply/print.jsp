@@ -1,13 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%-- <%@ page import="com.saturn.Temporary" %>
+<%@ page import="com.saturn.utc.Reimbursement" %>
+<%@ page import="com.saturn.utc.ValuesConvertUppercase" %>
 <%
 	String id=request.getParameter("id");
-	Temporary person=new Temporary();
+    Reimbursement vo = new Reimbursement();
+    String upper = "";
 	if(id!=null&&!id.trim().equals("")){
-		person=Temporary.get(id);
+		vo = Reimbursement.get(id);
+		 upper = ValuesConvertUppercase.valuesToString(vo.getMoney_total());
 	}
-%> --%>
+%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -19,7 +22,7 @@
 	font-family: "宋体";
 	font-size: 18px;
 }
-.STYLE4 {font-family: "宋体"; font-size: 12px; }
+.STYLE4 {font-family: "宋体"; font-size: 18px; }
 -->
 </style>
 <script> 
@@ -85,46 +88,44 @@ setdivvisible("div1");//打印结束后显示按钮
 </div> 
 <div id="div1"> 
 <table border="0" cellpadding="0" cellspacing="0" bordercolor="#000000">
-  <col width="93" />
+  <col width="193" />
   <col width="72" span="3" />
   <col width="93" />
   <col width="72" span="2" />
   <col width="95" />
   <tr height="30">
-    <td colspan="12" height="30" width="641"><div align="center" class="STYLE1">优泰科技报销单据</div></td>
+    <td colspan="2" height="30" width="641"><div align="center" class="STYLE1">优泰科技报销单据</div></td>
   </tr>
  	 <tr>
-   		 <td colspan="6"><div align="right"><span class="STYLE4">报销编号：</span></div></td>
-   	 	 <td><div align="right"><span class="STYLE4">songyang_201400001</span></div></td>
+   		 <td colspan="8"><div align="right"><span class="STYLE4">报销编号:</span></div></td>
+   	 	 <td><div align="right"><span class="STYLE4"><%=vo.getNumber() %></span></div></td>
     </tr>
     <tr>
-   	 	<td colspan="7" colspan="2"><div align="right"><span class="STYLE4">2014年3月20日</span></div></td>
+   	 	<td colspan="9" colspan="2"><div align="right"><span class="STYLE4"><%=vo.getDate() %></span></div></td>
     </tr>
     <tr>
-	    <td colspan="6"><div align="right"><span class="STYLE4">凭证数:</span></div></td>
-	    <td><div align="right"><span class="STYLE4">2</span>张</div></td>
+	    <td colspan="8"><div align="right"><span class="STYLE4">凭证数:</span></div></td>
+	    <td><div align="right"><span class="STYLE4"><%=vo.getNumber_total() %></span>张</div></td>
     </tr>
     <tr>
-    	<td colspan="6"><div align="right"><span class="STYLE4">合计金额:</span></div></td>
-	    <td><div align="right"><span class="STYLE4">200</span>元</div></td>
+    	<td colspan="8"><div align="right"><span class="STYLE4">合计金额:</span></div></td>
+	    <td><div align="right"><span class="STYLE4"><%=vo.getMoney_total() %></span>元</div></td>
    <%--  <td colspan="2"><div align="center"><span class="STYLE4"><%=person.getIdentify()%></span></div></td>
     <td rowspan="3"><div align="center"><span class="STYLE4">照片</span></div></td> --%>
   </tr>
   <tr>
-	    <td colspan="6"><div align="right"><span class="STYLE4">(大写合计):</span></div></td>
-	    <td><div align="right"><span class="STYLE4">贰佰元</span>整</div></td>
+	    <td colspan="8"><div align="right"><span class="STYLE4">(大写合计):</span></div></td>
+	    <td><div align="right"><span class="STYLE4"><%=upper %></span></div></td>
     </tr>
-    	<tr><td>&nbsp;</td><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-    	<tr><td>&nbsp;</td></tr>
-    	
+    	<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+   		<tr><td>&nbsp;</td></tr>
     <tr>
-    	<td></td>
     	<td><div align="right"><span class="STYLE4">领导签字:</span></div></td>
-	    <td><div align="center"><span class="STYLE4"></span></div></td>
-	    <td><div align="right"><span class="STYLE4">部门签字:</span></div></td>
-	    <td><div align="center"><span class="STYLE4">谷钰</span></div></td>
-	    <td><div align="right"><span class="STYLE4">报销人:</span></div></td>
-	    <td><div align="center"><span class="STYLE4">宋阳</span></div></td>
+    	<td>&nbsp;</td>
+	    <td colspan="2"><div align="center"><span class="STYLE4">部门签字:</span></div></td>
+	    <td colspan="2"><div align="left"><span class="STYLE4"></span></div></td>
+	    <td colspan="2"><div align="center"><span class="STYLE4">报销人:</span></div></td>
+	    <td colspan="2"><div align="right"><span class="STYLE4"><%=vo.getUserName() %></span></div></td>
 	    <td></td>
     </tr>
 </table>

@@ -232,7 +232,7 @@ $(function() {
 			</table>
 			<div style="padding: 10px;" >
 				<a href="#" class="easyui-linkbutton" onclick="add();" iconCls="icon-search">提交</a>
-				<a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a>
+				<!-- <a href="#" class="easyui-linkbutton" onclick="clearQueryForm();" iconCls="icon-cancel">取消</a> -->
 			</div>
 			<input id="userId" type="hidden" name="userId" value="<%=userId %>"></input>
 			<input id="state" type="hidden" name="state" value="待提交"></input>
@@ -241,4 +241,42 @@ $(function() {
 	</div>
 	<table id="queryTable"></table>
 </body>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.formValidator.initConfig({
+			formid : "addForm"
+		});
+
+		$("#projectName").formValidator({
+			onfocus : "项目名不能为空"
+		});
+
+		$("#password").formValidator({
+			onfocus : "密码位数在6到12之间"
+		}).inputValidator({
+			min : 6,
+			max : 12
+		});
+
+		$("#email").formValidator({
+			empty : true,
+			onfocus : "请正确填写邮箱，例如：some@163.com"
+		}).regexValidator({
+			regexp : "email"
+		}).inputValidator({
+			max : 100,
+			onerror : "不超过100个字符"
+		});
+
+		$("#phone").formValidator({
+			empty : true,
+			onfocus : "请正确填写电话(11位)，例如：13566969636"
+		}).regexValidator({
+			regexp : "phone"
+		}).inputValidator({
+			max : 100,
+			onerror : "不超过100个字符"
+		});
+	});
+</script>
 </html>

@@ -15,6 +15,7 @@
 			striped : true, //数据条纹显示
 			collapsible : true,
 			singleSelect : false,//只能选一行
+			showFooter:true,
 			url : '<%=request.getContextPath()%>/app/utc/reimbursement/listReimbursementByUser.action',
 			queryParams : {
 				state :'待确认'
@@ -36,17 +37,38 @@
 				field : 'projectName',
 				title : '项目',
 				width : 200,
-				sortable : true
+				sortable : true,
+				formatter:function(value, rec){
+					if(value == ""){
+						return "总计";
+					}else{
+						return ""+ value;
+					}
+				}
 			}, {
 				field : 'money_total',
 				title : '金额',
 				width : 80,
-				sortable : true
+				sortable : true,
+				formatter:function(value, rec){
+					if(value == ""&& isNaN(value)){
+						return "";
+					}else{
+						return ""+ value;
+					}
+				}
 			}, {
 				field : 'number_total',
 				title : '数量',
 				width : 80,
-				sortable : true
+				sortable : true,
+				formatter:function(value, rec){
+					if(value == ""&& isNaN(value)){
+						return "";
+					}else{
+						return ""+ value;
+					}
+				}
 			},{
 				field : 'date',
 				title : '申报日期',
@@ -146,7 +168,7 @@
 </head>
 <body>
 	<div id="panel" class="easyui-panel" title="查询条件"
-		icon="icon-query-form" collapsible="true"
+		icon="icon-query-form" collapsible="true" collapsed="true"
 		style="padding: 10px;">
 
 		<form id="queryForm" method="post">
