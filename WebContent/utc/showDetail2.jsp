@@ -19,14 +19,17 @@
 	String projectName;
 	String remark;
 	String date;
+	String name;
 	if(vo == null){
 		 projectName = "";
 		 remark = "";
 		 date = "";
+		 name = "";
 	} else{
 		 projectName = vo.getProjectName();
 		 remark = vo.getRemark();
 		 date = vo.getDate();
+		 name = vo.getUserName();
 	}
 	
 %>
@@ -127,23 +130,23 @@ $(function() {
 			<table>
 			<tr>	
 			<td>编号:</td>
-			<td><input id="number" type="text" name="number" value="<%=numId %>" size="38"/></td>
+			<td><input id="number" type="text" name="number" value="<%=numId %>" size="39" disabled="disabled"/></td>
 			<td></td>
 			<td>项目:</td>
 			<td><select id="projectName" class="easyui-combobox"
 						name="projectName" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.project"
 						 valueField="id"
-						textField="text" editable="false"></select></td>
+						textField="text" editable="false" disabled="disabled"></select></td>
 			<td></td>
 			<td>时间:</td>
-			<td><input id="date" type="text" name="date"  class="easyui-datebox" value="<%=date %>"></input></td>
+			<td><input id="date" type="text" name="date"  class="easyui-datebox" value="<%=date %>" disabled="disabled"></input></td>
 			<td></td>
 			<td>员工名:</td>
-			<td><input id="userName" type="text" name="userName" value="<%=userName %>" readonly="readonly"></input><td>
+			<td><input id="userName" type="text" name="userName" value="<%=name %>"  disabled="disabled" readonly="readonly"></input><td>
 			</tr>
 			<tr>
 				<td>备注:</td>
-				<td><textarea id="remark" name="remark" style="width:260px; height:50px"><%=remark %></textarea></td>
+				<td><textarea id="remark" name="remark" style="width:260px; height:50px" disabled="disabled"><%=remark %></textarea></td>
 			</tr>
 			</table>
 			<!-- <div style="padding: 10px;" >

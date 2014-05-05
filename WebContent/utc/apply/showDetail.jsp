@@ -47,6 +47,8 @@ $(function() {
 	});
 });
 	$(function() {
+		var editRow = undefined;
+		
 		$('#queryTable').datagrid({
 			title : '报销明细列表',
 			iconCls : 'icon-datalist',
@@ -103,11 +105,11 @@ $(function() {
 			}, {
 				field : 'createTime',
 				title : '时间',
-				width : 80	
+				width : 80,
 			}, {
 				field : 'remark',
 				title : '备注',
-				width : 150	
+				width : 150,
 			}, {
 				field : 'opt',
 				title : '操作',
@@ -122,9 +124,11 @@ $(function() {
 						'&nbsp&nbsp<a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
 				}
 			} ] ],
+			
 			pagination : true,
 			rownumbers : true,
-			toolbar : [ {
+			toolbar : [
+			           {
 				id : 'btnadd',
 				text : '添加明细',
 				iconCls : 'icon-add',
@@ -132,7 +136,7 @@ $(function() {
 					window.location.href='<%=request.getContextPath()%>/utc/apply/add.jsp?numId=<%=numId%>';
 					return false;//解决IE6的不跳转的bug
 				}
-			}, {
+			},{
 				id : 'btnedit',
 				text : '编辑',
 				iconCls : 'icon-edit',
@@ -211,7 +215,7 @@ $(function() {
 			<table>
 			<tr>	
 			<td>编号:</td>
-			<td><input id="number" type="text" name="number" value="<%=numId %>" /></td>
+			<td><input id="number" type="text" name="number" value="<%=numId %>" size="38"/></td>
 			<td></td>
 			<td>项目:</td>
 			<td><select id="projectName" class="easyui-combobox"
@@ -227,7 +231,7 @@ $(function() {
 			</tr>
 			<tr>
 				<td>备注:</td>
-				<td><textarea id="remark" name="remark" style="width:260px; height:50px"><%=remark %></textarea></td>
+				<td><textarea id="remark" name="remark" reg="^[\u4e00-\u9fa5]+$" tip="只允许中文字符" style="width:260px; height:50px"><%=remark %></textarea></td>
 			</tr>
 			</table>
 			<div style="padding: 10px;" >
@@ -251,16 +255,15 @@ $(function() {
 			onfocus : "项目名不能为空"
 		});
 
-		$("#password").formValidator({
-			onfocus : "密码位数在6到12之间"
+		$("#date").formValidator({
+			onfocus : "报销时间不能为空"
 		}).inputValidator({
 			min : 6,
 			max : 12
 		});
 
-		$("#email").formValidator({
-			empty : true,
-			onfocus : "请正确填写邮箱，例如：some@163.com"
+		$("#remark").formValidator({
+			onfocus : "备注不能为空"
 		}).regexValidator({
 			regexp : "email"
 		}).inputValidator({

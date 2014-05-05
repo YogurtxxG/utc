@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeSet;
 
+import com.saturn.utc.ReimbursementDetail;
+
 /**
  * A JSONObject is an unordered collection of name/value pairs. Its
  * external form is a string wrapped in curly braces with colons between the
@@ -1557,4 +1559,17 @@ public class JSONObject {
             throw new JSONException(e);
         }
      }
+
+
+	public static Object fromObject(String rowstr) {
+		// TODO Auto-generated method stub
+		return rowstr;
+	}
+
+
+	public static ReimbursementDetail toBean(Object fromObject,
+			Class<ReimbursementDetail> class1, Map<String, Object> classMap) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -631,7 +631,7 @@
 a.l-btn{
 	color:#444;
 	background:url('images/button_a_bg.gif') no-repeat top right;
-	font-size:12px;
+	font-size:14px;
 	text-decoration:none;
 	display:inline-block;
 	zoom:1;
@@ -668,8 +668,8 @@ a.l-btn-plain span.l-btn-left{
 
 a.l-btn span span.l-btn-text{
 	display:inline-block;
-	height:16px;
-	line-height:16px;
+	height:22px;
+	line-height:22px;
 	padding:0px;
 }
 a.l-btn span span span.l-btn-empty{

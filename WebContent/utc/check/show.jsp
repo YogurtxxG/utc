@@ -30,7 +30,7 @@
 			}, {
 				title : '编号',
 				field : 'number',
-				width : 80,
+				width : 120,
 				sortable : true
 			} ] ],
 			columns : [ [ {

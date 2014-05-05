@@ -26,7 +26,8 @@
 				<tr>
 					<td style="text-align:right"><span style="color: red">*</span>登录ID:</td>
 					<td><input id="id" name="id" type="text"></input></td>
-					<td><div id="idTip"></div></td>
+					<!-- <td><div id="idTip"></div></td> -->
+					<td><input class="easyui-validatebox" data-options="prompt:'请输入用户名.',required:true,validType:'length[3,10]'"></td>
 				</tr>
 				<tr>
 					<td style="text-align:right"><span style="color: red">*</span>姓名:</td>
@@ -62,7 +63,7 @@
 		</form>
 	</div>
 </body>
-<script type="text/javascript">
+<%-- <script type="text/javascript">
 	$(document).ready(function() {
 		$.formValidator.initConfig({
 			formid : "addForm"
@@ -119,5 +120,51 @@
 			onerror : "不超过100个字符"
 		});
 	});
-</script>
+</script> --%>
+<script>
+		$(function(){
+			$('input.easyui-validatebox').validatebox({
+				tipOptions: {	// the options to create tooltip
+					showEvent: 'mouseenter',
+					hideEvent: 'mouseleave',
+					showDelay: 0,
+					hideDelay: 0,
+					zIndex: '',
+					onShow: function(){
+						if (!$(this).hasClass('validatebox-invalid')){
+							if ($(this).tooltip('options').prompt){
+								$(this).tooltip('update', $(this).tooltip('options').prompt);
+							} else {
+								$(this).tooltip('tip').hide();
+							}
+						} else {
+							$(this).tooltip('tip').css({
+								color: '#000',
+								borderColor: '#CC9933',
+								backgroundColor: '#FFFFCC'
+							});
+						}
+					},
+					onHide: function(){
+						if (!$(this).tooltip('options').prompt){
+							$(this).tooltip('destroy');
+						}
+					}
+				}
+			}).tooltip({
+				position: 'right',
+				content: function(){
+					var opts = $(this).validatebox('options');
+					return opts.prompt;
+				},
+				onShow: function(){
+					$(this).tooltip('tip').css({
+						color: '#000',
+						borderColor: '#CC9933',
+						backgroundColor: '#FFFFCC'
+					});
+				}
+			});
+		});
+	</script>
 </html>

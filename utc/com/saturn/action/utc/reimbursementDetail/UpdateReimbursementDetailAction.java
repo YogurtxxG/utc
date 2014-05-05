@@ -16,9 +16,9 @@ public class UpdateReimbursementDetailAction implements IAction{
 			HttpServletResponse response) {
 		
 		ReimbursementDetail reimbursementDetail = BeanUtils.getBean(request, ReimbursementDetail.class);
-		
+		 String numId = reimbursementDetail.getNumId();
 		if(ReimbursementDetail.edit(reimbursementDetail) == 1){
-			return new JspView("/utc/apply/showDetail.jsp");
+			return new JspView("/utc/apply/showDetail.jsp?numId=" + numId);
 		} else {
 			return new JspErrorView("修改信息失败");
 		}

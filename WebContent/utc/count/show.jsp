@@ -104,12 +104,20 @@ $(function() {
 			rownumbers : true,
 			showFooter : true,
 			toolbar : [ {
-				id : 'btnadd',
-				text : '查看明细',
-				iconCls : 'icon-add',
+				id : 'btnedit',
+				text : '查看详情',
+				iconCls : 'icon-edit',
 				handler : function() {
-					window.location.href='<%=request.getContextPath()%>/utc/apply/toReimbursementDetail.action';
-					return false;//解决IE6的不跳转的bug
+					var rows = $('#queryTable').datagrid('getSelections');
+					if (rows.length == 0) {
+						$.messager.alert('提示','请选择修改项','info');
+						return;
+					} else if (rows.length > 1) {
+						$.messager.alert('提示','只能选择一项','info');
+						return;
+					}
+					window.location.href='<%=request.getContextPath()%>/utc/showDetail3.jsp?numId='+rows[0].number;
+					return false;
 				}
 			}]
 		});

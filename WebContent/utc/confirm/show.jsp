@@ -30,7 +30,7 @@
 			}, {
 				title : '编号',
 				field : 'number',
-				width : 80,
+				width : 120,
 				sortable : true
 			} ] ],
 			columns : [ [ {
@@ -131,7 +131,28 @@
 					window.location.href='<%=request.getContextPath()%>/utc/pass.jsp?id=' + rows[0].id +'&type=2';
 					return false;
 				}
-			} ]
+			},'-',{
+				id : 'btnedit',
+				text : '批量确认',
+				iconCls : 'icon-redo',
+				handler : function() {
+					var rows = $('#queryTable').datagrid('getSelections');
+					if (rows.length == 0) {
+						$.messager.alert('提示','请选择已付款项','info');
+						return;
+					} 
+					
+					var ids = [];
+					for(var i=0;i<rows.length;i++){
+						ids.push(rows[i].id);
+					}
+					$.messager.confirm('确认付款项', '确认批量付款', function(result){
+						if (result){
+							window.location.href='<%=request.getContextPath()%>/utc/confirm/confirmReimbursementAll.action?ids='+ids.join('__');
+						}
+					});
+					return false;
+			}} ]
 		});
 	});
 	

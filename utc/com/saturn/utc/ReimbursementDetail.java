@@ -12,9 +12,7 @@ public class ReimbursementDetail {
 	private String id = "";
 	private String name = "";
 	private String money = "";
-	private String money_total = "";
 	private String number = "";
-	private String number_total = "";
 	private String state = "";
 	private String createTime = "";
 	private String remark = "";
@@ -25,12 +23,10 @@ public class ReimbursementDetail {
 
 	public static int add(final ReimbursementDetail reimbursementDetail) {
 		SimpleDaoTemplate
-				.update("INSERT INTO utc_reimbursement_detail(name, money, money_total, number, number_total, state, createTime, remark, userId, numId) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+				.update("INSERT INTO utc_reimbursement_detail(name, money, number, state, createTime, remark, userId, numId) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
 						reimbursementDetail.getName(),
 						reimbursementDetail.getMoney(),
-						reimbursementDetail.getMoney_total(),
 						reimbursementDetail.getNumber(),
-						reimbursementDetail.getNumber_total(),
 						reimbursementDetail.getState(),
 						reimbursementDetail.getCreateTime(),
 						reimbursementDetail.getRemark(),
@@ -70,13 +66,11 @@ public class ReimbursementDetail {
 
 	public static int edit(final ReimbursementDetail reimbursementDetail) {
 		SimpleDaoTemplate
-				.update("UPDATE utc_reimbursement_detail SET name = ?, money = ?, money_total = ?, number = ?,"
-						+ " number_total = ?, state = ?, createTime = ?, remark = ?, userId = ?, numId = ? "
+				.update("UPDATE utc_reimbursement_detail SET name = ?, money = ?,  number = ?,"
+						+ "  state = ?, createTime = ?, remark = ?, userId = ?, numId = ? "
 						+ "WHERE id = ?", reimbursementDetail.getName(),
 						reimbursementDetail.getMoney(),
-						reimbursementDetail.getMoney_total(),
 						reimbursementDetail.getNumber(),
-						reimbursementDetail.getNumber_total(),
 						reimbursementDetail.getState(),
 						reimbursementDetail.getCreateTime(),
 						reimbursementDetail.getRemark(),
@@ -188,17 +182,14 @@ public class ReimbursementDetail {
 	public ReimbursementDetail() {
 	}
 
-	public ReimbursementDetail(String id, String name, String money,
-			String money_total, String number, String number_total,
+	public ReimbursementDetail(String id, String name, String money, String number,
 			String state, String createTime, String remark, String userId,
 			String numId) {
 
 		this.id = id;
 		this.name = name;
 		this.money = money;
-		this.money_total = money_total;
 		this.number = number;
-		this.number_total = number_total;
 		this.state = state;
 		this.createTime = createTime;
 		this.remark = remark;
@@ -260,22 +251,6 @@ public class ReimbursementDetail {
 
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
-	}
-
-	public String getMoney_total() {
-		return money_total;
-	}
-
-	public void setMoney_total(String money_total) {
-		this.money_total = money_total;
-	}
-
-	public String getNumber_total() {
-		return number_total;
-	}
-
-	public void setNumber_total(String number_total) {
-		this.number_total = number_total;
 	}
 
 	public String getUserId() {

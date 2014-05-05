@@ -100,6 +100,10 @@ $(function() {
 					return '<span><a href="#" onclick="deleteVO(\'' + rec.id + '\');"><img src="<%=request.getContextPath()%>/app/themes/icons/cancel.png" width="14" height="14" border="0" /></a></span>';
 				}
 			} ] ],
+			enableHeaderClickMenu: false, 
+            enableHeaderContextMenu: false, 
+            enableRowContextMenu: false, 
+            rowTooltip: true,
 			pagination : true,
 			rownumbers : true,
 			showFooter : true,

@@ -15,6 +15,10 @@
 	
 	$(function() {
 		$('#name').focus();
+		
+		$('#name').combobox({
+			width : 250
+		});
 	});
 </script>
 <%
@@ -32,7 +36,10 @@
 			<table class="table-form">
 				<tr>
 					<td style="text-align:right"><span style="color: red">*</span>报销名称:</td>
-					<td><input id="name" name="name" type="text"></input></td>
+					<td><select id="name" class="easyui-combobox"
+						name="name" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.subject"
+						 valueField="id"
+						textField="text" editable="false"></select></td>
 					<td><div id="nameTip"></div></td>
 				</tr>
 				<tr>
@@ -73,14 +80,14 @@
 		$.formValidator.initConfig({
 			formid : "addForm"
 		});
-
+/* 
 		$("#name").formValidator({
 			onfocus : "名称不能为空,不超过50个字符！"
 		}).inputValidator({
 			min : 1,
 			max : 50
 		});
-
+ */
 		$("#money").formValidator({
 			onfocus : "金额不能为空！"
 		}).inputValidator({

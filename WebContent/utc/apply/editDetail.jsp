@@ -14,6 +14,10 @@
 	
 	$(function() {
 		$('#name').focus();
+		$('#name').combobox({
+			width : 200,
+			value : '${reimb.name}'
+		});
 	});
 </script>
 </head>
@@ -26,7 +30,9 @@
 			<table class="table-form">
 				<tr>
 					<td style="text-align:right"><span style="color: red">*</span>报销名称:</td>
-					<td><input id="name" name="name" type="text" value="${reimb.name}"></input></td>
+					<td><select id="name" class="easyui-combobox"
+						name="name" url="<%=request.getContextPath()%>/app/system/dict/listDictByType.action?type=utc.subject"
+						 valueField="id" textField="text" editable="false"></select></td>
 					<td><div id="nameTip"></div></td>
 				</tr>
 				<tr>
@@ -50,12 +56,13 @@
 					<td colspan="3">
 						<div style="padding: 10px;">
 							<a href="#" onclick="add()" class="easyui-linkbutton"
-								iconCls="icon-add">添加</a> <a href="javascript:history.back(-1)"
+								iconCls="icon-add">确定</a> <a href="javascript:history.back(-1)"
 								class="easyui-linkbutton" iconCls="icon-cancel">取消</a>
 						</div></td>
 				</tr>
 			</table>
 			<input id="id" name="id" type="hidden" value="${reimb.id}"></input>
+			<input id="numId" name="numId" type="hidden" value="${reimb.numId}"></input>
 			<input id="state" name="state" type="hidden" value="${reimb.state}"></input>
 			<input id="createTime" type="hidden" name="createTime" value="<%=DateUtils.getSystemTime()%>"></input>
 		</form>
@@ -67,12 +74,12 @@
 			formid : "editForm"
 		});
 
-		$("#name").formValidator({
+		/* $("#name").formValidator({
 			onfocus : "名称不能为空,不超过50个字符！"
 		}).inputValidator({
 			min : 1,
 			max : 50
-		});
+		}); */
 
 		$("#money").formValidator({
 			onfocus : "金额不能为空！"

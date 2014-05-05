@@ -6,11 +6,15 @@
 	pageEncoding="UTF-8"%>
 	
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/themes/saturn/easyui.css">
+<%-- <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/themes/metro/easyui.css"> --%>
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/themes/demo.css">
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/themes/saturn/saturn.css">
+
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/jquery.easyui.min.js"></script>
+
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/easyui-lang-zh_CN.js"></script>
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/formValidator.js"></script>
@@ -18,6 +22,10 @@
 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/themes/saturn/formValidator/validator.css">
 
 <script type="text/javascript" src="<%=request.getContextPath()%>/app/js/highcharts.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/app/js/easy_validator.pack.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath()%>/app/js/jquery.bgiframe.min.js"></script>
+
+
 <script type="text/javascript">
 	<%
 		Object __user = request.getSession().getAttribute("authUser");
