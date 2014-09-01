@@ -82,10 +82,10 @@ setdivvisible("div1");//打印结束后显示按钮
 
 <body>
 <center>
-<div id="div0"> 
+<!-- <div id="div0"> 
 <input type="button" onclick="printpr();"  value="打印预览"> 
 <input type="button" onClick="print();" value="打印"> <p>
-</div> 
+</div>  -->
 <div id="div1"> 
 <table border="0" cellpadding="0" cellspacing="0" bordercolor="#000000">
   <col width="193" />
@@ -97,36 +97,30 @@ setdivvisible("div1");//打印结束后显示按钮
     <td colspan="2" height="30" width="641"><div align="center" class="STYLE1">优泰科技报销单据</div></td>
   </tr>
  	 <tr>
-   		 <td colspan="8"><div align="right"><span class="STYLE4">报销编号:</span></div></td>
-   	 	 <td><div align="right"><span class="STYLE4"><%=vo.getNumber() %></span></div></td>
+   	 	 <td colspan="5"><div align="right"><span class="STYLE4">报销编号:</span></div></td>
+   	 	 <td colspan="4"><div align="right"><span class="STYLE4"><%=vo.getNumber() %></span></div></td>
     </tr>
     <tr>
    	 	<td colspan="9" colspan="2"><div align="right"><span class="STYLE4"><%=vo.getDate() %></span></div></td>
     </tr>
     <tr>
-	    <td colspan="8"><div align="right"><span class="STYLE4">凭证数:</span></div></td>
-	    <td><div align="right"><span class="STYLE4"><%=vo.getNumber_total() %></span>张</div></td>
+	    <td colspan="7"><div align="right"><span class="STYLE4">凭证数:</span></div></td>
+	    <td colspan="2"><div align="right"><span class="STYLE4"><%=vo.getNumber_total() %></span>张</div></td>
     </tr>
     <tr>
-    	<td colspan="8"><div align="right"><span class="STYLE4">合计金额:</span></div></td>
-	    <td><div align="right"><span class="STYLE4"><%=vo.getMoney_total() %></span>元</div></td>
-   <%--  <td colspan="2"><div align="center"><span class="STYLE4"><%=person.getIdentify()%></span></div></td>
-    <td rowspan="3"><div align="center"><span class="STYLE4">照片</span></div></td> --%>
+    	<td colspan="7"><div align="right"><span class="STYLE4">合计金额:</span></div></td>
+	    <td colspan="2"><div align="right"><span class="STYLE4"><%=vo.getMoney_total() %></span>元</div></td>
   </tr>
   <tr>
-	    <td colspan="8"><div align="right"><span class="STYLE4">(大写合计):</span></div></td>
-	    <td><div align="right"><span class="STYLE4"><%=upper %></span></div></td>
+	    <td colspan="7"><div align="right"><span class="STYLE4">(大写合计):</span></div></td>
+	    <td colspan="2"><div align="right"><span class="STYLE4"><%=upper %></span></div></td>
     </tr>
     	<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
    		<tr><td>&nbsp;</td></tr>
     <tr>
-    	<td><div align="right"><span class="STYLE4">领导签字:</span></div></td>
-    	<td>&nbsp;</td>
-	    <td colspan="2"><div align="center"><span class="STYLE4">部门签字:</span></div></td>
-	    <td colspan="2"><div align="left"><span class="STYLE4"></span></div></td>
-	    <td colspan="2"><div align="center"><span class="STYLE4">报销人:</span></div></td>
-	    <td colspan="2"><div align="right"><span class="STYLE4"><%=vo.getUserName() %></span></div></td>
-	    <td></td>
+    	<td><div align="left"><span class="STYLE4">领导签字:</span></div></td>
+	    <td colspan="4"><div align="left"><span class="STYLE4">部门签字:</span></div></td>
+	    <td colspan="4"><div align="left"><span class="STYLE4">报销人:<%=vo.getUserName() %></span></div></td>
     </tr>
 </table>
 </div>

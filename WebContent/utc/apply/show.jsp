@@ -163,7 +163,7 @@ $(function() {
 							return;
 						}
 						<%-- window.location.href='<%=request.getContextPath()%>/utc/apply/print.jsp?id=' + rows[0].id; --%>
-						window.open ('<%=request.getContextPath()%>/utc/apply/print.jsp?id='+rows[0].id,'打印页面','height=600,width=800,top=0,left=0,toolbar=no,menubar=no,scrollbars=yes, resizable=no,location=no, status=no');
+						window.open ('<%=request.getContextPath()%>/utc/apply/print.jsp?id='+rows[0].id,'打印页面','height=600,width=800,top=0,left=0,toolbar=yes,menubar=no,scrollbars=yes, resizable=no,location=no, status=no');
 						return false;
 					}
 				}]
