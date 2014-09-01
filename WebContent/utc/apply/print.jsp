@@ -97,8 +97,8 @@ setdivvisible("div1");//打印结束后显示按钮
     <td colspan="2" height="30" width="641"><div align="center" class="STYLE1">优泰科技报销单据</div></td>
   </tr>
  	 <tr>
-   	 	 <td colspan="5"><div align="right"><span class="STYLE4">报销编号:</span></div></td>
-   	 	 <td colspan="4"><div align="right"><span class="STYLE4"><%=vo.getNumber() %></span></div></td>
+   	 	 <td colspan="4"><div align="right"><span class="STYLE4">报销编号:</span></div></td>
+   	 	 <td colspan="5"><div align="right"><span class="STYLE4"><%=vo.getNumber() %></span></div></td>
     </tr>
     <tr>
    	 	<td colspan="9" colspan="2"><div align="right"><span class="STYLE4"><%=vo.getDate() %></span></div></td>
@@ -112,8 +112,8 @@ setdivvisible("div1");//打印结束后显示按钮
 	    <td colspan="2"><div align="right"><span class="STYLE4"><%=vo.getMoney_total() %></span>元</div></td>
   </tr>
   <tr>
-	    <td colspan="7"><div align="right"><span class="STYLE4">(大写合计):</span></div></td>
-	    <td colspan="2"><div align="right"><span class="STYLE4"><%=upper %></span></div></td>
+	    <td colspan="5"><div align="right"><span class="STYLE4">(大写合计):</span></div></td>
+	    <td colspan="4"><div align="right"><span class="STYLE4"><%=upper %></span></div></td>
     </tr>
     	<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
    		<tr><td>&nbsp;</td></tr>
